@@ -18,9 +18,11 @@ const PERFECT_RATIO = 0.38;
 const LAUNCH_X = { L: 130, R: 1150 };
 const LAUNCH_Y = 470;
 const LOADED_SHOTS = 2;
-// 재장전 시간. 칸 길이의 배수라서 접시가 빨라지면 함께 빨라지고, 한 칸을 비우면 언제나 끝나 있다.
-// 1.5 로 두었더니 사람의 오차로 재장전에 걸려 맞힐 수 없는 접시가 많았다(2026-11-01 실제 플레이)
-const RELOAD_STEPS = 1;
+// 다 쓴 탄을 채우는 시간. 칸 길이의 배수라서 접시가 빨라지면 함께 빨라진다.
+// 길게 두면 사람의 오차로 재장전에 걸려 맞힐 수 없는 접시가 많아진다(1.5·1칸을 직접 해 보고 줄였다)
+const RELOAD_STEPS = 0.5;
+// 한 발이 남았을 때는 이 배수만큼 쉬어야 찬다. 한 칸보다 길어야 붙어 오는 두 접시 사이에 차지 않아서 탕탕 철컥이 된다
+const REST_RELOAD = 3;
 const MAX_RUN = 2;
 export const COUNT_IN_STEPS = 6;
 const STEPS_PER_BEAT = 4;
@@ -428,8 +430,8 @@ export class Session {
   fire(side) {
     if (this.shots === 0) return { type: 'empty', side };
     this.shots -= 1;
-    // 마지막으로 쏜 뒤 재장전 시간이 지나면 두 발이 다 찬다
-    this.reloadLeft = this.reloadSeconds;
+    // 다 쓰면 곧 채우고, 한 발이 남았으면 쉬는 동안 채운다
+    this.reloadLeft = this.shots === 0 ? this.reloadSeconds : this.reloadSeconds * REST_RELOAD;
     const ring = this.ring(side);
     let target = null;
     let nearest = Infinity;
