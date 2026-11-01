@@ -18,8 +18,9 @@ const PERFECT_RATIO = 0.38;
 const LAUNCH_X = { L: 130, R: 1150 };
 const LAUNCH_Y = 470;
 const LOADED_SHOTS = 2;
-// 재장전 시간. 칸 길이의 배수라서 접시가 빨라지면 함께 빨라지고, 한 칸을 비우면 언제나 끝나 있다
-const RELOAD_STEPS = 1.5;
+// 재장전 시간. 칸 길이의 배수라서 접시가 빨라지면 함께 빨라지고, 한 칸을 비우면 언제나 끝나 있다.
+// 1.5 로 두었더니 사람의 오차로 재장전에 걸려 맞힐 수 없는 접시가 많았다(2026-11-01 실제 플레이)
+const RELOAD_STEPS = 1;
 const MAX_RUN = 2;
 export const COUNT_IN_STEPS = 6;
 const STEPS_PER_BEAT = 4;
